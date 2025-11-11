@@ -1,4 +1,4 @@
-@font-face {
+@font-face {@font-face {
   font-family: "Segoe MDL2 Assets";
   src: local("Segoe MDL2 Assets");
 }
@@ -44,7 +44,14 @@ body {
   text-decoration: none;
   margin: 10px 0;
   font-weight: bold;
-  display: block;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar nav a img {
+  height: 24px; /* ✅ icônes agrandies */
+  margin-right: 8px;
+  vertical-align: middle;
 }
 
 .sidebar nav a:hover {
@@ -68,3 +75,5 @@ p {
   font-size: 1em;
   color: rgb(220, 220, 220);
 }
+
+
