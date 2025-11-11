@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Accueil</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    @font-face {
+      font-family: "Segoe MDL2 Assets";
+      src: local("Segoe MDL2 Assets");
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0c1e3c;
+      color: white;
+      min-height: 100vh;
+    }
+
+    #toggleSidebar {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 6px;
+      backdrop-filter: blur(4px);
+    }
+
+    .sidebar {
+      width: 220px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      padding: 20px;
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 999;
+    }
+
+    .sidebar.hidden {
+      transform: translateX(-100%);
+    }
+
+    .sidebar nav {
+      margin-top: 60px;
+    }
+
+    .sidebar nav a {
+      color: #00ff99;
+      text-decoration: none;
+      margin: 10px 0;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .sidebar nav a img {
+      height: 20px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .sidebar nav a:hover {
+      text-decoration: underline;
+    }
+
+    .content {
+      margin-left: 260px;
+      padding: 40px;
+      transition: margin-left 0.3s ease;
+    }
+
+    .sidebar.hidden ~ .content {
+      margin-left: 60px;
+    }
+
+    h1 {
+      color: #00ff99;
+      font-size: 1.8em;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1em;
+      color: rgb(220, 220, 220);
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: rgba(255,255,255,0.08);
+      margin: 10px 0;
+      padding: 12px;
+      border-radius: 6px;
+    }
+
+    .event-date {
+      font-weight: bold;
+      color: #00ff99;
+      margin-bottom: 4px;
+    }
+
+    .event-title {
+      font-size: 1em;
+    }
+  </style>
+</head>
+<body>
+  <button id="toggleSidebar">☰</button>
+
+  <div class="sidebar" id="sidebar">
+    <nav>
+      <a href="#" onclick="showHome()">Accueil</a>
+      <a href="#">À propos</a>
+      <a href="#">Services</a>
+      <a href="#">Contact</a>
+      <a href="https://ent.colleges05.fr/auth/saml/wayf?callback=https%3A%2F%2Fent.colleges05.fr%2Ftimeline%2Ftimeline#/" target="_blank">
+        <img src="https://ent.colleges05.fr/assets/themes/ent05/img/logo.png" alt="Logo ENT">
+        ENT Collèges 05
+      </a>
+      <a href="#" onclick="showCalendar()">Calendrier Outlook</a>
+    </nav>
+  </div>
+
+  <main class="content" id="mainContent">
+    <h1>Bienvenue !</h1>
+    <p>Ceci est la page d'accueil avec un volet latéral rétractable.</p>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/gh/kewisch/ical.js/build/ical.min.js"></script>
+  <script>
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const sidebar = document.getElementById('sidebar');
+    const content = document.getElementById('mainContent');
+
+    toggleBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('hidden');
+      content.style.marginLeft = sidebar.classList.contains('hidden') ? '60px' : '260px';
+    });
+
+    function showHome() {
+      content.innerHTML = `
+        <h1>Bienvenue !</h1>
+        <p>Ceci est la page d'accueil avec un volet latéral rétractable.</p>
+      `;
+    }
+
+    function showCalendar() {
+      content.innerHTML = `<h1>📅 Calendrier Outlook</h1><ul id="eventList">Chargement des événements...</ul>`;
+
+      const originalUrl = "https://outlook.live.com/owa/calendar/ca905b7d-ec52-4d40-a45b-0d5c0036be27/f3b15f26-e23c-43f2-ad65-ff8065372160/cid-EA2087AD0F6BEB9D/calendar.ics";
+      const icsUrl = "https://corsproxy.io/?" + encodeURIComponent(originalUrl);
+
+      fetch(icsUrl)
+        .then(response => {
+          if (!response.ok) throw new Error("Impossible de charger le fichier ICS.");
+          return response.text();
+        })
+        .then(data => {
+          const jcalData = ICAL.parse(data);
+          const comp = new ICAL.Component(jcalData);
+          const events = comp.getAllSubcomponents('vevent');
+          const list = document.getElementById('eventList');
+          list.innerHTML = '';
+
+          events.forEach(event => {
+            const e = new ICAL.Event(event);
+            const li = document.createElement('li');
+            li.innerHTML = `
+              <div class="event-date">${e.startDate.toString()}</div>
+              <div class="event-title">${e.summary}</div>
+            `;
+            list.appendChild(li);
+          });
+
+          if (events.length === 0) {
+            list.innerHTML = "<li>Aucun événement trouvé.</li>";
+          }
+        })
+        .catch(error => {
+          document.getElementById('eventList').innerHTML = "<li>Erreur de chargement du calendrier.</li>";
+          console.error("Erreur ICS :", error);
+        });
+    }
+  </script>
+</body>
+</html>
