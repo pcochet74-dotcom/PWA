@@ -5,11 +5,6 @@
   <title>Accueil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    @font-face {
-      font-family: "Segoe MDL2 Assets";
-      src: local("Segoe MDL2 Assets");
-    }
-
     body {
       margin: 0;
       padding: 0;
@@ -98,28 +93,6 @@
       font-size: 1em;
       color: rgb(220, 220, 220);
     }
-
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    li {
-      background: rgba(255,255,255,0.08);
-      margin: 10px 0;
-      padding: 12px;
-      border-radius: 6px;
-    }
-
-    .event-date {
-      font-weight: bold;
-      color: #00ff99;
-      margin-bottom: 4px;
-    }
-
-    .event-title {
-      font-size: 1em;
-    }
   </style>
 </head>
 <body>
@@ -135,7 +108,6 @@
         <img src="https://ent.colleges05.fr/assets/themes/ent05/img/logo.png" alt="Logo ENT">
         ENT Collèges 05
       </a>
-      <a href="#" onclick="showCalendar()">Calendrier Outlook</a>
     </nav>
   </div>
 
@@ -144,7 +116,6 @@
     <p>Ceci est la page d'accueil avec un volet latéral rétractable.</p>
   </main>
 
-  <script src="https://cdn.jsdelivr.net/gh/kewisch/ical.js/build/ical.min.js"></script>
   <script>
     const toggleBtn = document.getElementById('toggleSidebar');
     const sidebar = document.getElementById('sidebar');
@@ -152,11 +123,7 @@
 
     toggleBtn.addEventListener('click', () => {
       sidebar.classList.toggle('hidden');
-      if (sidebar.classList.contains('hidden')) {
-        content.style.marginLeft = '60px';
-      } else {
-        content.style.marginLeft = '260px';
-      }
+      content.style.marginLeft = sidebar.classList.contains('hidden') ? '60px' : '260px';
     });
 
     function showHome() {
@@ -164,43 +131,6 @@
         <h1>Bienvenue !</h1>
         <p>Ceci est la page d'accueil avec un volet latéral rétractable.</p>
       `;
-    }
-
-    function showCalendar() {
-      content.innerHTML = `<h1>📅 Calendrier Outlook</h1><ul id="eventList">Chargement des événements...</ul>`;
-
-      const icsUrl = "https://outlook.live.com/owa/calendar/ca905b7d-ec52-4d40-a45b-0d5c0036be27/f3b15f26-e23c-43f2-ad65-ff8065372160/cid-EA2087AD0F6BEB9D/calendar.ics";
-
-      fetch(icsUrl)
-        .then(response => {
-          if (!response.ok) throw new Error("Impossible de charger le fichier ICS.");
-          return response.text();
-        })
-        .then(data => {
-          const jcalData = ICAL.parse(data);
-          const comp = new ICAL.Component(jcalData);
-          const events = comp.getAllSubcomponents('vevent');
-          const list = document.getElementById('eventList');
-          list.innerHTML = '';
-
-          events.forEach(event => {
-            const e = new ICAL.Event(event);
-            const li = document.createElement('li');
-            li.innerHTML = `
-              <div class="event-date">${e.startDate.toString()}</div>
-              <div class="event-title">${e.summary}</div>
-            `;
-            list.appendChild(li);
-          });
-
-          if (events.length === 0) {
-            list.innerHTML = "<li>Aucun événement trouvé.</li>";
-          }
-        })
-        .catch(error => {
-          document.getElementById('eventList').innerHTML = "<li>Erreur de chargement du calendrier.</li>";
-          console.error("Erreur ICS :", error);
-        });
     }
   </script>
 </body>
