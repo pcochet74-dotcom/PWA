@@ -4,26 +4,122 @@
   <meta charset="UTF-8">
   <title>Accueil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- ✅ Lien vers le fichier CSS brut sur GitHub -->
-  <link rel="stylesheet" href="https://raw.githubusercontent.com/pcochet74-dotcom/PWA/cd213fe6293760c53bc9d0d4fdd02703f8fed69b/Style.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0c1e3c;
+      color: white;
+      min-height: 100vh;
+    }
+
+    #toggleSidebar {
+      position: fixed;
+      top: 15px;
+      left: 15px;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 8px 12px;
+      border-radius: 6px;
+      backdrop-filter: blur(4px);
+    }
+
+    .sidebar {
+      width: 220px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      padding: 20px;
+      transition: transform 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      z-index: 999;
+    }
+
+    .sidebar.hidden {
+      transform: translateX(-100%);
+    }
+
+    .sidebar nav {
+      margin-top: 60px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar nav a {
+      color: #00ff99;
+      text-decoration: none;
+      margin: 10px 0;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .sidebar nav a img {
+      height: 24px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    .sidebar nav a:hover {
+      text-decoration: underline;
+    }
+
+    .separator {
+      border-top: 1px solid rgba(255,255,255,0.2);
+      margin: 20px 0;
+    }
+
+    .content {
+      margin-left: 260px;
+      padding: 40px;
+      transition: margin-left 0.3s ease;
+    }
+
+    .sidebar.hidden ~ .content {
+      margin-left: 60px;
+    }
+
+    h1 {
+      color: #00ff99;
+      font-size: 1.8em;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 1em;
+      color: rgb(220, 220, 220);
+    }
+  </style>
 </head>
 <body>
+  <button id="toggleSidebar">☰</button>
+
   <div class="sidebar" id="sidebar">
-    <button onclick="toggleSidebar()">☰</button>
     <nav>
       <a href="#" onclick="showHome()">Accueil</a>
       <a href="#">À propos</a>
       <a href="#">Services</a>
       <a href="#">Contact</a>
 
-      <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.2); margin: 20px 0;">
+      <div class="separator"></div>
 
       <a href="https://ent.colleges05.fr/auth/saml/wayf?callback=https%3A%2F%2Fent.colleges05.fr%2Ftimeline%2Ftimeline#/" target="_blank">
-        <img src="https://ent.colleges05.fr/assets/themes/ent05/img/logo.png" alt="Logo ENT" style="height: 24px; vertical-align: middle; margin-right: 8px;">
+        <img src="https://ent.colleges05.fr/assets/themes/ent05/img/logo.png" alt="Logo ENT">
         ENT
       </a>
       <a href="https://0050022x.index-education.net/pronote/" target="_blank">
-        <img src="https://github.com/pcochet74-dotcom/PWA/blob/9898f340725eb733388f603a5670bc937c7c5396/PRONOTE-horizontal.png?raw=true" alt="Logo Pronote" style="height: 24px; vertical-align: middle; margin-right: 8px;">
+        <img src="https://github.com/pcochet74-dotcom/PWA/blob/9898f340725eb733388f603a5670bc937c7c5396/PRONOTE-horizontal.png?raw=true" alt="Logo Pronote">
         Pronote
       </a>
     </nav>
@@ -35,13 +131,16 @@
   </main>
 
   <script>
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const sidebar = document.getElementById('sidebar');
+    const content = document.getElementById('mainContent');
+
+    toggleBtn.addEventListener('click', () => {
       sidebar.classList.toggle('hidden');
-    }
+      content.style.marginLeft = sidebar.classList.contains('hidden') ? '60px' : '260px';
+    });
 
     function showHome() {
-      const content = document.getElementById('mainContent');
       content.innerHTML = `
         <h1>Bienvenue !</h1>
         <p>Ceci est la page d'accueil avec un volet latéral rétractable.</p>
