@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Accueil</title>
+  <title>Ma PWA</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
     @font-face {
@@ -16,188 +16,199 @@
       font-family: 'Segoe UI', sans-serif;
       background-color: #0c1e3c;
       color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       min-height: 100vh;
     }
 
-    #toggleSidebar {
-      position: fixed;
-      top: 15px;
-      left: 15px;
-      z-index: 1000;
-      background: rgba(255, 255, 255, 0.1);
-      border: none;
-      color: white;
-      font-size: 24px;
-      cursor: pointer;
-      padding: 8px 12px;
-      border-radius: 6px;
-      backdrop-filter: blur(4px);
-    }
-
-    .sidebar {
-      width: 220px;
+    .login-container {
       background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(8px);
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
       padding: 20px;
-      transition: transform 0.3s ease;
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      top: 0;
-      left: 0;
-      bottom: 0;
-      z-index: 999;
-    }
-
-    .sidebar.hidden {
-      transform: translateX(-100%);
-    }
-
-    .sidebar nav {
-      margin-top: 60px;
-    }
-
-    .sidebar nav a {
-      color: #00ff99;
-      text-decoration: none;
-      margin: 10px 0;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
-
-    .sidebar nav a img {
-      height: 20px;
-      margin-right: 8px;
-      vertical-align: middle;
-    }
-
-    .sidebar nav a:hover {
-      text-decoration: underline;
-    }
-
-    .content {
-      margin-left: 260px;
-      padding: 40px;
-      transition: margin-left 0.3s ease;
-    }
-
-    .sidebar.hidden ~ .content {
-      margin-left: 60px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      text-align: center;
+      backdrop-filter: blur(8px);
+      width: 280px;
     }
 
     h1 {
+      margin-bottom: 5px;
       color: #00ff99;
-      font-size: 1.8em;
-      margin-bottom: 10px;
+      font-size: 1.2em;
     }
 
     p {
+      margin-bottom: 15px;
       font-size: 1em;
-      color: rgb(220, 220, 220);
     }
 
-    ul {
-      list-style: none;
+    .login-image {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 3px solid white;
+      box-shadow: 0 0 12px rgba(0,0,0,0.5);
+      margin-bottom: 15px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    label {
+      text-align: left;
+      font-size: 0.85em;
+    }
+
+    input[type="text"],
+    .password-wrapper input {
+      width: 100%;
+      height: 38px;
+      padding: 0 40px 0 10px;
+      border: none;
+      border-radius: 5px;
+      background-color: rgba(255,255,255,0.2);
+      color: white;
+      font-size: 0.9em;
+      box-sizing: border-box;
+    }
+
+    .password-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
       padding: 0;
+      font-family: "Segoe MDL2 Assets";
+      font-size: 18px;
+      color: white;
+      opacity: 0.7;
+      transition: opacity 0.2s;
     }
 
-    li {
-      background: rgba(255,255,255,0.08);
-      margin: 10px 0;
-      padding: 12px;
-      border-radius: 6px;
+    .toggle-password:hover {
+      opacity: 1;
     }
 
-    .event-date {
+    input[type="submit"],
+    .create-account-btn {
+      width: 100%;
+      padding: 8px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
       font-weight: bold;
-      color: #00ff99;
-      margin-bottom: 4px;
+      font-size: 0.9em;
     }
 
-    .event-title {
-      font-size: 1em;
+    input[type="submit"] {
+      background-color: #317EFB;
+      color: white;
+      margin-top: 10px;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #255ec7;
+    }
+
+    .separator {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: #ccc;
+      font-size: 0.85em;
+    }
+
+    .separator::before,
+    .separator::after {
+      content: "";
+      flex: 1;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .separator:not(:empty)::before {
+      margin-right: 0.5em;
+    }
+
+    .separator:not(:empty)::after {
+      margin-left: 0.5em;
+    }
+
+    .create-account-btn {
+      background-color: #0e5311;
+      color: rgb(202, 202, 202);
+    }
+
+    .create-account-btn:hover {
+      background-color:  #0e5311e1;
     }
   </style>
 </head>
 <body>
-  <button id="toggleSidebar">☰</button>
+  <div class="login-container">
+    <h1>Bienvenue dans ma PWA</h1>
+    <p>Vous pouvez maintenant l’installer comme une vraie application !</p>
 
-  <div class="sidebar" id="sidebar">
-    <nav>
-      <a href="#" onclick="showHome()">Accueil</a>
-      <a href="#">À propos</a>
-      <a href="#">Services</a>
-      <a href="#">Contact</a>
-      <a href="https://ent.colleges05.fr/auth/saml/wayf?callback=https%3A%2F%2Fent.colleges05.fr%2Ftimeline%2Ftimeline#/" target="_blank">
-        <img src="https://ent.colleges05.fr/assets/themes/ent05/img/logo.png" alt="Logo ENT">
-        ENT Collèges 05
-      </a>
-      <a href="#" onclick="showCalendar()">Calendrier Outlook</a>
-    </nav>
+    <img class="login-image" src="guest.png" alt="Icône invité Windows">
+
+    <form onsubmit="return handleLogin(event)">
+      <label for="username">Nom d'utilisateur :</label>
+      <input type="text" id="username" name="username" required>
+
+      <label for="password">Mot de passe :</label>
+      <div class="password-wrapper">
+        <input type="password" id="password" name="password" required>
+        <button type="button" class="toggle-password" id="toggleBtn" onclick="togglePassword()">&#xE052;</button>
+      </div>
+
+      <input type="submit" value="Se connecter">
+
+      <div class="separator">ou</div>
+
+      <button type="button" class="create-account-btn" onclick="createAccount()">Créer un compte</button>
+    </form>
   </div>
 
-  <main class="content" id="mainContent">
-    <h1>Bienvenue !</h1>
-    <p>Ceci est la page d'accueil avec un volet latéral rétractable.</p>
-  </main>
-
-  <script src="https://cdn.jsdelivr.net/gh/kewisch/ical.js/build/ical.min.js"></script>
   <script>
-    const toggleBtn = document.getElementById('toggleSidebar');
-    const sidebar = document.getElementById('sidebar');
-    const content = document.getElementById('mainContent');
+    function handleLogin(event) {
+      event.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
 
-    toggleBtn.addEventListener('click', () => {
-      sidebar.classList.toggle('hidden');
-      content.style.marginLeft = sidebar.classList.contains('hidden') ? '60px' : '260px';
-    });
-
-    function showHome() {
-      content.innerHTML = `
-        <h1>Bienvenue !</h1>
-        <p>Ceci est la page d'accueil avec un volet latéral rétractable.</p>
-      `;
+      // Vérification simple en local
+      if (username === "p.cochet" && password === "PCfraise3008!") {
+        window.location.href = "https://pcochet74-dotcom.github.io/PWA/accueil.html";
+      } else {
+        alert("Nom d'utilisateur ou mot de passe incorrect.");
+      }
     }
 
-    function showCalendar() {
-      content.innerHTML = `<h1>📅 Calendrier Outlook</h1><ul id="eventList">Chargement des événements...</ul>`;
+    function createAccount() {
+      window.location.href = "register.html";
+    }
 
-      const originalUrl = "https://outlook.live.com/owa/calendar/ca905b7d-ec52-4d40-a45b-0d5c0036be27/f3b15f26-e23c-43f2-ad65-ff8065372160/cid-EA2087AD0F6BEB9D/calendar.ics";
-      const icsUrl = "https://corsproxy.io/?" + encodeURIComponent(originalUrl);
-
-      fetch(icsUrl)
-        .then(response => {
-          if (!response.ok) throw new Error("Impossible de charger le fichier ICS.");
-          return response.text();
-        })
-        .then(data => {
-          const jcalData = ICAL.parse(data);
-          const comp = new ICAL.Component(jcalData);
-          const events = comp.getAllSubcomponents('vevent');
-          const list = document.getElementById('eventList');
-          list.innerHTML = '';
-
-          events.forEach(event => {
-            const e = new ICAL.Event(event);
-            const li = document.createElement('li');
-            li.innerHTML = `
-              <div class="event-date">${e.startDate.toString()}</div>
-              <div class="event-title">${e.summary}</div>
-            `;
-            list.appendChild(li);
-          });
-
-          if (events.length === 0) {
-            list.innerHTML = "<li>Aucun événement trouvé.</li>";
-          }
-        })
-        .catch(error => {
-          document.getElementById('eventList').innerHTML = "<li>Erreur de chargement du calendrier.</li>";
-          console.error("Erreur ICS :", error);
-        });
+    function togglePassword() {
+      const passwordField = document.getElementById('password');
+      const toggleBtn = document.getElementById('toggleBtn');
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+        toggleBtn.innerHTML = "&#xE0A9;";
+      } else {
+        passwordField.type = "password";
+        toggleBtn.innerHTML = "&#xE052;";
+      }
     }
   </script>
 </body>
