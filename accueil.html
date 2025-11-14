@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="fr">
-<html lang="fr"><head><style data-merge-styles="true"></style>
+<head>
   <meta charset="UTF-8">
   <title>Accueil</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="StyleAccueil.css">
+
+  <!-- Définition du logo du site comme favicon -->
+  <link rel="icon" type="image/png" href="https://github.com/pcochet74-dotcom/PWA/blob/main/pwa_logo_icon_248747.png?raw=true">
+
   <style>
     /* Bouton toggle toujours visible, collé au ruban */
     #toggleBtn {
@@ -42,7 +46,8 @@
 
     .content {
       margin-left: 240px;
-      padding: 30px 20px 20px 20px; /* réduit pour remonter le contenu */
+      padding: 30px 20px 20px 20px;
+      position: relative;
     }
 
     /* Liens du ruban avec couleur #32cd32 */
@@ -55,6 +60,14 @@
 
     .sidebar nav a:hover {
       text-decoration: underline;
+    }
+
+    /* Logo en haut à droite */
+    #siteLogo {
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      height: 60px;
     }
 
     /* Widget météo */
@@ -83,10 +96,10 @@
     #weatherContainer {
       display: inline-block;
       background: #ffffff;
-      border: 2px solid #0c1e3c;
       border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      /* Contour interne de 7px */
+      box-shadow: inset 0 0 0 7px #0c1e3c;
     }
 
     #widget_autocomplete_preview {
@@ -116,21 +129,29 @@
         ENT
       </a>
       <a href="https://0050022x.index-education.net/pronote/" target="_blank">
-        <img src="https://github.com/pcochet74-dotcom/PWA/blob/9898f340725eb733388f603a5670bc937c7c5396/PRONOTE-horizontal.png?raw=true" alt="Logo Pronote" style="height: 24px; vertical-align: middle; margin-right: 8px;">Pronote
-</a>
+        <img src="https://github.com/pcochet74-dotcom/PWA/blob/9898f340725eb733388f603a5670bc937c7c5396/PRONOTE-horizontal.png?raw=true" alt="Logo Pronote" style="height: 24px; vertical-align: middle; margin-right: 8px;">
+        Pronote
+      </a>
     </nav>
   </div>
 
   <main class="content" id="mainContent">
+    <!-- Logo du site en haut à droite -->
+    <img id="siteLogo" src="https://github.com/pcochet74-dotcom/PWA/blob/main/pwa_logo_icon_248747.png?raw=true" alt="Logo du site">
+
     <h1 style="color: limegreen;">Bienvenue !</h1>
     <p>Ceci est la page d'accueil avec un volet latéral rétractable.</p>
   </main>
 
   <!-- Croix à gauche + widget météo -->
   <div id="weatherWrapper">
-    <button id="weatherCloseBtn" type="button" aria-label="Fermer le widget météo" onclick="document.getElementById('weatherWrapper').style.display='none'">✖</button>
+    <button id="weatherCloseBtn" type="button" aria-label="Fermer le widget météo"
+            onclick="document.getElementById('weatherWrapper').style.display='none'">✖</button>
     <div id="weatherContainer">
-      <iframe id="widget_autocomplete_preview" width="300" height="150" frameborder="0" src="https://meteofrance.com/widget/prevision/051790##0C1E3C" title="Prévisions Veynes par Météo-France">
+      <iframe id="widget_autocomplete_preview"
+        width="300" height="150" frameborder="0"
+        src="https://meteofrance.com/widget/prevision/051790##0C1E3C"
+        title="Prévisions Veynes par Météo-France">
       </iframe>
     </div>
   </div>
@@ -145,6 +166,7 @@
       e && e.preventDefault();
       const content = document.getElementById('mainContent');
       content.innerHTML = `
+        <img id="siteLogo" src="https://github.com/pcochet74-dotcom/PWA/blob/main/pwa_logo_icon_248747.png?raw=true" alt="Logo du site">
         <h1 style="color: limegreen;">Bienvenue !</h1>
         <p>Ceci est la page d'accueil avec un volet latéral rétractable.</p>
       `;
@@ -154,6 +176,7 @@
       e && e.preventDefault();
       const content = document.getElementById('mainContent');
       content.innerHTML = `
+        <img id="siteLogo" src="https://github.com/pcochet74-dotcom/PWA/blob/main/pwa_logo_icon_248747.png?raw=true" alt="Logo du site">
         <h1>Casier</h1>
         <p>Voici un aperçu du casier :</p>
         <ul>
@@ -166,11 +189,5 @@
       `;
     }
   </script>
-
-
-
-  
-
-
-
-</body></html>
+</body>
+</html>
