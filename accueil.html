@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -5,13 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="StyleAccueil.css">
   <style>
-    /* Bouton toggle toujours visible */
+    /* Bouton toggle toujours visible, au-dessus du ruban */
     #toggleBtn {
       position: fixed;
       top: 10px;
-      left: 10px;
-      z-index: 1000;
-      background-color: #317EFB;
+      left: 230px; /* décalé à droite du ruban */
+      z-index: 1001;
+      background-color: #0c1e3c;
       color: white;
       border: none;
       padding: 8px 12px;
@@ -35,7 +36,7 @@
       box-sizing: border-box;
       transition: transform 0.3s ease;
       overflow-y: auto;
-      z-index: 999;
+      z-index: 1000;
     }
 
     .content { margin-left: 240px; padding: 20px; }
@@ -59,7 +60,6 @@
       gap: 8px;
     }
 
-    /* Bouton croix à gauche du widget */
     #weatherCloseBtn {
       background-color: #0c1e3c;
       color: #ffffff;
@@ -72,7 +72,6 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
 
-    /* Conteneur du widget météo */
     #weatherContainer {
       display: inline-block;
       background: #ffffff;
@@ -82,7 +81,6 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.12);
     }
 
-    /* Iframe du widget météo */
     #widget_autocomplete_preview {
       width: 300px;
       height: 150px;
@@ -92,12 +90,13 @@
   </style>
 </head>
 <body>
-  <!-- Bouton toggle toujours visible -->
+  <!-- Bouton toggle déplacé à droite du ruban -->
   <button id="toggleBtn" onclick="toggleSidebar()">☰</button>
 
   <div class="sidebar" id="sidebar">
     <nav>
       <a href="#" onclick="showHome(event)">Accueil</a>
+      <a href="#" onclick="showCasierENT(event)">Casier</a>
       <a href="#">À propos</a>
       <a href="#">Services</a>
       <a href="#">Contact</a>
@@ -111,10 +110,6 @@
       <a href="https://0050022x.index-education.net/pronote/" target="_blank">
         <img src="https://github.com/pcochet74-dotcom/PWA/blob/9898f340725eb733388f603a5670bc937c7c5396/PRONOTE-horizontal.png?raw=true" alt="Logo Pronote" style="height: 24px; vertical-align: middle; margin-right: 8px;">
         Pronote
-      </a>
-      <a href="#" onclick="showCasierENT(event)">
-        <img src="https://ent.colleges05.fr/assets/themes/ent05/img/illustrations/logo.png" alt="Casier ENT" style="height: 24px; vertical-align: middle; margin-right: 8px;">
-        Casier ENT
       </a>
     </nav>
   </div>
@@ -156,8 +151,8 @@
       e && e.preventDefault();
       const content = document.getElementById('mainContent');
       content.innerHTML = `
-        <h1>Casier ENT</h1>
-        <p>Voici un aperçu du casier ENT :</p>
+        <h1>Casier</h1>
+        <p>Voici un aperçu du casier :</p>
         <ul>
           <li><a href="/rack/get/5c2d0f5f-c0eb-477d-93ca-df7be79124d9" target="_blank">Grandes invasions.pdf</a></li>
           <li><a href="/rack/get/5d3a9f85-4533-4996-8b33-9684425d4400" target="_blank">527Europe.PNG</a></li>
