@@ -42,7 +42,7 @@
 
     .content {
       margin-left: 240px;
-      padding: 30px 20px 20px 20px; /* réduit pour remonter le contenu */
+      padding: 30px 20px 20px 20px;
     }
 
     /* Liens du ruban avec couleur #32cd32 */
@@ -83,10 +83,10 @@
     #weatherContainer {
       display: inline-block;
       background: #ffffff;
-      border: 2px solid #0c1e3c;
       border-radius: 8px;
       overflow: hidden;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      /* Contour interne de 7px */
+      box-shadow: inset 0 0 0 7px #0c1e3c;
     }
 
     #widget_autocomplete_preview {
@@ -173,8 +173,3 @@
   </script>
 </body>
 </html>
-
-  </script>
-</body>
-</html>
-
