@@ -6,11 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="StyleAccueil.css">
   <style>
-    /* Bouton toggle toujours visible, au-dessus du ruban */
+    /* Bouton toggle toujours visible, collé au ruban */
     #toggleBtn {
       position: fixed;
       top: 10px;
-      left: 230px; /* décalé à droite du ruban */
+      left: 10px;
       z-index: 1001;
       background-color: #0c1e3c;
       color: white;
@@ -33,23 +33,31 @@
       background-color: #0c1e3c;
       color: white;
       padding: 20px;
+      padding-top: 60px; /* espace ajouté pour éviter chevauchement avec le bouton */
       box-sizing: border-box;
       transition: transform 0.3s ease;
       overflow-y: auto;
       z-index: 1000;
     }
 
-    .content { margin-left: 240px; padding: 20px; }
+    .content {
+      margin-left: 240px;
+      padding: 60px 20px 20px 20px;
+    }
 
+    /* Liens du ruban avec couleur personnalisée */
     .sidebar nav a {
       display: block;
       margin: 10px 0;
-      color: white;
+      color: #00ff99;
       text-decoration: none;
     }
-    .sidebar nav a:hover { text-decoration: underline; }
 
-    /* Wrapper météo: croix à gauche + widget à droite, en bas à droite */
+    .sidebar nav a:hover {
+      text-decoration: underline;
+    }
+
+    /* Widget météo */
     #weatherWrapper {
       position: fixed;
       bottom: 10px;
@@ -90,7 +98,7 @@
   </style>
 </head>
 <body>
-  <!-- Bouton toggle déplacé à droite du ruban -->
+  <!-- Bouton toggle collé au ruban -->
   <button id="toggleBtn" onclick="toggleSidebar()">☰</button>
 
   <div class="sidebar" id="sidebar">
@@ -115,7 +123,7 @@
   </div>
 
   <main class="content" id="mainContent">
-    <h1>Bienvenue !</h1>
+    <h1 style="color: limegreen;">Bienvenue !</h1>
     <p>Ceci est la page d'accueil avec un volet latéral rétractable.</p>
   </main>
 
@@ -142,7 +150,7 @@
       e && e.preventDefault();
       const content = document.getElementById('mainContent');
       content.innerHTML = `
-        <h1>Bienvenue !</h1>
+        <h1 style="color: limegreen;">Bienvenue !</h1>
         <p>Ceci est la page d'accueil avec un volet latéral rétractable.</p>
       `;
     }
