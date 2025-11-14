@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
@@ -22,9 +21,7 @@
     }
 
     /* Sidebar masquée */
-    .sidebar.hidden {
-      transform: translateX(-100%);
-    }
+    .sidebar.hidden { transform: translateX(-100%); }
 
     .sidebar {
       position: fixed;
@@ -41,10 +38,7 @@
       z-index: 999;
     }
 
-    .content {
-      margin-left: 240px;
-      padding: 20px;
-    }
+    .content { margin-left: 240px; padding: 20px; }
 
     .sidebar nav a {
       display: block;
@@ -52,9 +46,48 @@
       color: white;
       text-decoration: none;
     }
+    .sidebar nav a:hover { text-decoration: underline; }
 
-    .sidebar nav a:hover {
-      text-decoration: underline;
+    /* Wrapper météo: croix à gauche + widget à droite, en bas à droite */
+    #weatherWrapper {
+      position: fixed;
+      bottom: 10px;
+      right: 10px;
+      z-index: 3000; /* au-dessus de tout */
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Bouton croix à gauche du widget */
+    #weatherCloseBtn {
+      background-color: #0c1e3c;
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      line-height: 1;
+      padding: 10px 12px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    /* Conteneur du widget météo avec contour demandé */
+    #weatherContainer {
+      display: inline-block;
+      background: #ffffff;
+      border: 2px solid #0c1e3c; /* Contour #0c1e3c */
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
+
+    /* Iframe du widget météo */
+    #widget_autocomplete_preview {
+      width: 300px;
+      height: 150px;
+      border: none;
+      display: block;
     }
   </style>
 </head>
@@ -64,7 +97,7 @@
 
   <div class="sidebar" id="sidebar">
     <nav>
-      <a href="#" onclick="showHome()">Accueil</a>
+      <a href="#" onclick="showHome(event)">Accueil</a>
       <a href="#">À propos</a>
       <a href="#">Services</a>
       <a href="#">Contact</a>
@@ -79,7 +112,7 @@
         <img src="https://github.com/pcochet74-dotcom/PWA/blob/9898f340725eb733388f603a5670bc937c7c5396/PRONOTE-horizontal.png?raw=true" alt="Logo Pronote" style="height: 24px; vertical-align: middle; margin-right: 8px;">
         Pronote
       </a>
-      <a href="#" onclick="showCasierENT()">
+      <a href="#" onclick="showCasierENT(event)">
         <img src="https://ent.colleges05.fr/assets/themes/ent05/img/illustrations/logo.png" alt="Casier ENT" style="height: 24px; vertical-align: middle; margin-right: 8px;">
         Casier ENT
       </a>
@@ -91,13 +124,27 @@
     <p>Ceci est la page d'accueil avec un volet latéral rétractable.</p>
   </main>
 
+  <!-- Croix à gauche + widget météo -->
+  <div id="weatherWrapper">
+    <button id="weatherCloseBtn" type="button" aria-label="Fermer le widget météo"
+            onclick="document.getElementById('weatherWrapper').style.display='none'">✖</button>
+    <div id="weatherContainer">
+      <iframe id="widget_autocomplete_preview"
+        width="300" height="150" frameborder="0"
+        src="https://meteofrance.com/widget/prevision/051790##15AC1BCC"
+        title="Prévisions Veynes par Météo-France">
+      </iframe>
+    </div>
+  </div>
+
   <script>
     function toggleSidebar() {
       const sidebar = document.getElementById('sidebar');
       sidebar.classList.toggle('hidden');
     }
 
-    function showHome() {
+    function showHome(e) {
+      e && e.preventDefault();
       const content = document.getElementById('mainContent');
       content.innerHTML = `
         <h1>Bienvenue !</h1>
@@ -105,7 +152,8 @@
       `;
     }
 
-    function showCasierENT() {
+    function showCasierENT(e) {
+      e && e.preventDefault();
       const content = document.getElementById('mainContent');
       content.innerHTML = `
         <h1>Casier ENT</h1>
