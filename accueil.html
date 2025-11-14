@@ -53,7 +53,7 @@
       position: fixed;
       bottom: 10px;
       right: 10px;
-      z-index: 3000; /* au-dessus de tout */
+      z-index: 3000;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -72,11 +72,11 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
 
-    /* Conteneur du widget météo avec contour demandé */
+    /* Conteneur du widget météo */
     #weatherContainer {
       display: inline-block;
       background: #ffffff;
-      border: 2px solid #0c1e3c; /* Contour #0c1e3c */
+      border: 2px solid #0c1e3c;
       border-radius: 8px;
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0,0,0,0.12);
@@ -131,7 +131,7 @@
     <div id="weatherContainer">
       <iframe id="widget_autocomplete_preview"
         width="300" height="150" frameborder="0"
-        src="https://meteofrance.com/widget/prevision/051790##15AC1BCC"
+        src="https://meteofrance.com/widget/prevision/051790##0C1E3C"
         title="Prévisions Veynes par Météo-France">
       </iframe>
     </div>
