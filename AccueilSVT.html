@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Accueil - M. BARNEIX P.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="StyleAccueil.css">
+
+  <!-- Définition du logo du site comme favicon -->
+  <link rel="icon" type="image/png" href="https://github.com/pcochet74-dotcom/PWA/blob/main/pwa_logo_icon_248747.png?raw=true">
+
+  <style>
+    #toggleBtn {
+      position: fixed; top: 10px; left: 10px; z-index: 1001;
+      background-color: #0c1e3c; color: white; border: none;
+      padding: 8px 12px; font-size: 20px; border-radius: 4px; cursor: pointer;
+    }
+    .sidebar.hidden { transform: translateX(-100%); }
+    .sidebar {
+      position: fixed; top: 0; left: 0; width: 220px; height: 100%;
+      background-color: #0c1e3c; color: white; padding: 20px; padding-top: 60px;
+      box-sizing: border-box; transition: transform 0.3s ease; overflow-y: auto; z-index: 1000;
+    }
+    .content {
+      margin-left: 240px; padding: 30px 20px 20px 20px; position: relative;
+    }
+    .sidebar nav a {
+      display: block; margin: 10px 0; color: #32cd32; text-decoration: none;
+    }
+    .sidebar nav a:hover { text-decoration: underline; }
+    #siteLogo { position: absolute; top: 10px; right: 20px; height: 60px; }
+
+    /* Widget météo */
+    #weatherWrapper {
+      position: fixed; bottom: 10px; right: 10px; z-index: 3000;
+      display: flex; align-items: center; gap: 8px;
+    }
+    #weatherCloseBtn {
+      background-color: #0c1e3c; color: #ffffff; border: none; cursor: pointer;
+      font-size: 16px; line-height: 1; padding: 10px 12px; border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    #weatherContainer {
+      display: inline-block; background: #ffffff; border-radius: 8px; overflow: hidden;
+      box-shadow: inset 0 0 0 7px #0c1e3c;
+    }
+    #widget_autocomplete_preview { width: 300px; height: 150px; border: none; display: block; }
+
+    /* Tuiles */
+    .tiles {
+      display: flex; flex-wrap: wrap; gap: 20px; margin-top: 40px;
+    }
+    .tile {
+      width: 180px; height: 180px;
+      background: #3a4a6a; /* plus clair que #0c1e3c */
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; cursor: pointer; transition: transform 0.2s ease;
+      text-decoration: none;
+    }
+    .tile:hover { transform: scale(1.05); }
+    .tile img { max-width: 100px; margin-bottom: 12px; }
+    .tile span { font-weight: bold; color: #ffffff; }
+  </style>
+</head>
+<body>
+  <button id="toggleBtn" onclick="toggleSidebar()">☰</button>
+
+  <div class="sidebar" id="sidebar">
+    <nav>
+      <a href="#" onclick="showHome(event)">Accueil</a>
+      <a href="#" onclick="showCasierENT(event)">Casier</a>
+      <a href="#">À propos</a>
+      <a href="#">Services</a>
+      <a href="#">Contact</a>
+
+      <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.2); margin: 20px 0;">
+
+      <a href="https://ent.colleges05.fr/auth/saml/wayf?callback=https%3A%2F%2Fent.colleges05.fr%2Ftimeline%2Ftimeline#/" target="_blank">
+        <img src="https://ent.colleges05.fr/assets/themes/ent05/img/logo.png" alt="Logo ENT" style="height: 24px; vertical-align: middle; margin-right: 8px;"> ENT
+      </a>
+      <a href="https://0050022x.index-education.net/pronote/" target="_blank">
+        <img src="https://github.com/pcochet74-dotcom/PWA/blob/9898f340725eb733388f603a5670bc937c7c5396/PRONOTE-horizontal.png?raw=true" alt="Logo Pronote" style="height: 24px; vertical-align: middle; margin-right: 8px;"> Pronote
+      </a>
+    </nav>
+  </div>
+
+  <main class="content" id="mainContent">
+    <img id="siteLogo" src="https://github.com/pcochet74-dotcom/PWA/blob/main/pwa_logo_icon_248747.png?raw=true" alt="Logo du site">
+    <h1 style="color: limegreen;">Bienvenue !</h1>
+    <p>Ceci est la page d'accueil avec un volet latéral rétractable.</p>
+
+    <!-- Tuiles -->
+    <div class="tiles">
+      <!-- Tuile Science & Nature -->
+      <a class="tile" href="https://scienceetnature.github.io/Science-Nature/index.html" target="_blank" rel="noopener">
+        <img src="https://scienceetnature.github.io/Science-Nature/Pic/science&nature1.png" alt="Logo Science & Nature (noir)">
+        <span>Science & Nature</span>
+      </a>
+      <!-- Tuile Classroomscreen -->
+      <a class="tile" href="https://www.classroomscreen.com/" target="_blank" rel="noopener">
+        <img src="https://static.classroomscreen.com/favicon-v2.png" alt="Logo Classroomscreen">
+        <span>Classroomscreen</span>
+      </a>
+    </div>
+  </main>
+
+  <div id="weatherWrapper">
+    <button id="weatherCloseBtn" type="button" aria-label="Fermer le widget météo" onclick="document.getElementById('weatherWrapper').style.display='none'">✖</button>
+    <div id="weatherContainer">
+      <iframe id="widget_autocomplete_preview" width="300" height="150" frameborder="0" src="https://meteofrance.com/widget/prevision/051790##0C1E3C" title="Prévisions Veynes par Météo-France"></iframe>
+    </div>
+  </div>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('hidden');
+    }
+    function showHome(e) {
+      e && e.preventDefault();
+      const content = document.getElementById('mainContent');
+      content.innerHTML = `
+        <img id="siteLogo" src="https://github.com/pcochet74-dotcom/PWA/blob/main/pwa_logo_icon_248747.png?raw=true" alt="Logo du site">
+        <h1 style="color: limegreen;">Bienvenue !</h1>
+        <p>Ceci est la page d'accueil avec un volet latéral rétractable.</p>
+        <div class="tiles">
+          <a class="tile" href="https://scienceetnature.github.io/Science-Nature/index.html" target="_blank" rel="noopener">
+            <img src="https://scienceetnature.github.io/Science-Nature/Pic/science&nature1.png" alt="Logo Science & Nature (noir)">
+            <span>Science & Nature</span>
+          </a>
+          <a class="tile" href="https://www.classroomscreen.com/" target="_blank" rel="noopener">
+            <img src="https://static.classroomscreen.com/favicon-v2.png" alt="Logo Classroomscreen">
+            <span>Classroomscreen</span>
+          </a>
+        </div>
+      `;
+    }
+    function showCasierENT(e) {
+      e && e.preventDefault();
+      const content = document.getElementById('mainContent');
+      content.innerHTML = `
+        <img id="siteLogo" src="https://github.com/pcochet74-dotcom/PWA/blob/main/pwa_logo_icon_248747.png?raw=true" alt="Logo du site">
+        <h1>Casier</h1>
+        <p>Voici un
