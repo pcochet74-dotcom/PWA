@@ -52,7 +52,7 @@
     }
     .tile {
       width: 180px; height: 180px;
-      background: #3a4a6a; /* plus clair que #0c1e3c */
+      background: #3a4a6a;
       border-radius: 12px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -62,54 +62,61 @@
     .tile:hover { transform: scale(1.05); }
     .tile img { max-width: 100px; margin-bottom: 12px; }
     .tile span { font-weight: bold; color: #ffffff; }
+
+    /* Loader */
+    .loader {
+      border: 6px solid rgba(255,255,255,0.3);
+      border-top: 6px solid #32cd32;
+      border-radius: 50%;
+      width: 70px;
+      height: 70px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
   <button id="toggleBtn" onclick="toggleSidebar()">☰</button>
 
+  <!-- Sidebar -->
   <div class="sidebar" id="sidebar">
     <nav>
       <a href="#" onclick="showHome(event)">Accueil</a>
-      <a href="#" onclick="showCasierENT(event)">Casier</a>
-      <a href="#">À propos</a>
-      <a href="#">Services</a>
-      <a href="#">Contact</a>
-
-      <hr style="border: none; border-top: 1px solid rgba(255,255,255,0.2); margin: 20px 0;">
-
-      <a href="https://ent.colleges05.fr/auth/saml/wayf?callback=https%3A%2F%2Fent.colleges05.fr%2Ftimeline%2Ftimeline#/" target="_blank">
-        <img src="https://ent.colleges05.fr/assets/themes/ent05/img/logo.png" alt="Logo ENT" style="height: 24px; vertical-align: middle; margin-right: 8px;"> ENT
-      </a>
-      <a href="https://0050022x.index-education.net/pronote/" target="_blank">
-        <img src="https://github.com/pcochet74-dotcom/PWA/blob/9898f340725eb733388f603a5670bc937c7c5396/PRONOTE-horizontal.png?raw=true" alt="Logo Pronote" style="height: 24px; vertical-align: middle; margin-right: 8px;"> Pronote
-      </a>
+      <a href="#" onclick="openPronote(event)">Pronote</a>
+      <a href="#" onclick="openENT(event)">ENT</a>
+      <a href="#" onclick="openCasier(event)">Casier</a>
     </nav>
   </div>
 
+  <!-- Contenu principal -->
   <main class="content" id="mainContent">
     <img id="siteLogo" src="https://github.com/pcochet74-dotcom/PWA/blob/main/pwa_logo_icon_248747.png?raw=true" alt="Logo du site">
     <h1 style="color: limegreen;">Bienvenue !</h1>
     <p>Ceci est la page d'accueil avec un volet latéral rétractable.</p>
 
-    <!-- Tuiles -->
     <div class="tiles">
-      <!-- Tuile Science & Nature -->
       <a class="tile" href="https://scienceetnature.github.io/Science-Nature/index.html" target="_blank" rel="noopener">
-        <img src="https://scienceetnature.github.io/Science-Nature/Pic/science&nature1.png" alt="Logo Science & Nature (noir)">
+        <img src="https://scienceetnature.github.io/Science-Nature/Pic/science&nature1.png">
         <span>Science & Nature</span>
       </a>
-      <!-- Tuile Classroomscreen -->
+
       <a class="tile" href="https://www.classroomscreen.com/" target="_blank" rel="noopener">
-        <img src="https://static.classroomscreen.com/favicon-v2.png" alt="Logo Classroomscreen">
+        <img src="https://static.classroomscreen.com/favicon-v2.png">
         <span>Classroomscreen</span>
       </a>
     </div>
   </main>
 
+  <!-- Météo -->
   <div id="weatherWrapper">
-    <button id="weatherCloseBtn" type="button" aria-label="Fermer le widget météo" onclick="document.getElementById('weatherWrapper').style.display='none'">✖</button>
+    <button id="weatherCloseBtn" onclick="document.getElementById('weatherWrapper').style.display='none'">✖</button>
     <div id="weatherContainer">
-      <iframe id="widget_autocomplete_preview" width="300" height="150" frameborder="0" src="https://meteofrance.com/widget/prevision/051790##0C1E3C" title="Prévisions Veynes par Météo-France"></iframe>
+      <iframe id="widget_autocomplete_preview" src="https://meteofrance.com/widget/prevision/051790##0C1E3C"></iframe>
     </div>
   </div>
 
@@ -117,29 +124,71 @@
     function toggleSidebar() {
       document.getElementById('sidebar').classList.toggle('hidden');
     }
-    function showHome(e) {
-      e && e.preventDefault();
+
+    function isPWA() {
+      return window.matchMedia("(display-mode: standalone)").matches ||
+             window.navigator.standalone === true;
+    }
+
+    /* ------ Écran de chargement ------ */
+    function showLoader(serviceName, url) {
       const content = document.getElementById('mainContent');
+
       content.innerHTML = `
-        <img id="siteLogo" src="https://github.com/pcochet74-dotcom/PWA/blob/main/pwa_logo_icon_248747.png?raw=true" alt="Logo du site">
-        <h1 style="color: limegreen;">Bienvenue !</h1>
-        <p>Ceci est la page d'accueil avec un volet latéral rétractable.</p>
-        <div class="tiles">
-          <a class="tile" href="https://scienceetnature.github.io/Science-Nature/index.html" target="_blank" rel="noopener">
-            <img src="https://scienceetnature.github.io/Science-Nature/Pic/science&nature1.png" alt="Logo Science & Nature (noir)">
-            <span>Science & Nature</span>
-          </a>
-          <a class="tile" href="https://www.classroomscreen.com/" target="_blank" rel="noopener">
-            <img src="https://static.classroomscreen.com/favicon-v2.png" alt="Logo Classroomscreen">
-            <span>Classroomscreen</span>
-          </a>
+        <div style="
+          width: 100%;
+          height: 80vh;
+          background: #0c1e3c;
+          border-radius: 15px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          text-align: center;
+          padding: 20px;
+        ">
+          <div class="loader"></div>
+          <h1 style="margin-top: 30px;">Connexion à ${serviceName}…</h1>
+          <p>Veuillez patienter, redirection en cours.</p>
+          <a href="${url}" style="
+            margin-top: 25px;
+            background: #32cd32;
+            padding: 10px 25px;
+            border-radius: 6px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+          ">Si la redirection ne fonctionne pas, cliquez ici</a>
         </div>
       `;
+
+      setTimeout(() => {
+        if (isPWA()) {
+          window.location.href = url;
+        } else {
+          window.open(url, "_blank");
+        }
+      }, 3000);
     }
-    function showCasierENT(e) {
-      e && e.preventDefault();
-      const content = document.getElementById('mainContent');
-      content.innerHTML = `
-        <img id="siteLogo" src="https://github.com/pcochet74-dotcom/PWA/blob/main/pwa_logo_icon_248747.png?raw=true" alt="Logo du site">
-        <h1>Casier</h1>
-        <p>Voici un
+
+    /* ------ Boutons ------ */
+
+    function openPronote(e) {
+      e.preventDefault();
+      showLoader("Pronote", "https://0050022x.index-education.net/pronote/eleve.html?identifiant=kSK9hGcSAgsKGCZR");
+    }
+
+    function openENT(e) {
+      e.preventDefault();
+      showLoader("l’ENT", "https://ent.colleges05.fr/timeline/timeline");
+    }
+
+    function openCasier(e) {
+      e.preventDefault();
+      showLoader("votre casier", "https://ent.colleges05.fr/rack");
+    }
+  </script>
+
+</body>
+</html>
